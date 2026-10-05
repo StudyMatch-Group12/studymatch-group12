@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c6df95c-63ac-417d-88e9-a7a49b9e7124" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/pt/upt/studymatch/config/CorsConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="2c6df95c-63ac-417d-88e9-a7a49b9e7124" name="Changes" comment="feat(backend): configure global CORS mapping for React frontend (Closes #9)" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -114,5 +111,9 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat(backend): configure global CORS mapping for React frontend (Closes #9)" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(backend): configure global CORS mapping for React frontend (Closes #9)" />
   </component>
 </project>
