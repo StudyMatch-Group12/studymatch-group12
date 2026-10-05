@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea1c4f2f-3cdf-4f9a-b748-d039a60489e0" name="Changes" comment="" />
+    <list default="true" id="2c6df95c-63ac-417d-88e9-a7a49b9e7124" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/CODING_CONVENTIONS_AND_DOD.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/arquitetura-inicial.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/use-cases-additional.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/use-cases-base.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,31 +20,58 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "danielqueirosss"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/StudyMatch-Group12/studymatch-group12",
+    "accountId": "b2adc7aa-e284-4ca1-ada8-f67377a5510b"
+  }
+}]]></component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
   <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3,
+  "associatedIndex": 8,
   "fromUser": false
 }]]></component>
-  <component name="ProjectId" id="3K3COc7egSzICxqDoDoWnwvfBra" />
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectId" id="3KHPYrhNFbe1rD7ZVdg86I4cuXp" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Git.CreateWorkingTree.LastParentPath": "C:/Users/Daniel/Documents/GitHub",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "docs/issue-6-additional-use-cases",
+    "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Daniel/Documents/GitHub/studymatch-group12",
     "nodejs_package_manager_path": "npm"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="StudymatchBackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="studymatch-backend" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="pt.upt.studymatch.studymatchbackend.StudymatchBackendApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -45,11 +82,11 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="ea1c4f2f-3cdf-4f9a-b748-d039a60489e0" name="Changes" comment="" />
-      <created>1790776834870</created>
+      <changelist id="2c6df95c-63ac-417d-88e9-a7a49b9e7124" name="Changes" comment="" />
+      <created>1791211573144</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1790776834870</updated>
+      <updated>1791211573144</updated>
     </task>
     <servers />
   </component>
