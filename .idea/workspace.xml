@@ -4,104 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c6df95c-63ac-417d-88e9-a7a49b9e7124" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/Header.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/StudentCard.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/AcademicHistory.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/StudentProfile.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/services/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="2c6df95c-63ac-417d-88e9-a7a49b9e7124" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="main" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;danielqueirosss&quot;
-  }
-}</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/StudyMatch-Group12/studymatch-group12.git",
-    "accountId": "726643d7-94d6-41a8-9b80-6eeefe33cd4e"
-  }
-}]]></component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
         <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
       </MavenGeneralSettings>
     </option>
-  </component>
-  <component name="NextEditCompletionFeaturesState">
-    <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.000000000222034" />
-      <entry key="S5" value="1.0001375839689584" />
-      <entry key="S10" value="1.0117296193015142" />
-      <entry key="S30" value="1.2272102775826534" />
-      <entry key="S60" value="1.4766657923353148" />
-      <entry key="M2" value="1.6904098727099104" />
-      <entry key="M5" value="1.8622690485487463" />
-      <entry key="M10" value="1.9285844326439823" />
-      <entry key="M15" value="1.9518041610101198" />
-      <entry key="M30" value="1.975604510552365" />
-      <entry key="H1" value="1.9877269412911471" />
-      <entry key="H2" value="1.993844525713729" />
-      <entry key="H4" value="1.9969175119907008" />
-      <entry key="D1" value="1.9994855909102336" />
-      <entry key="W1" value="1.999926496780992" />
-    </decayedCancelled>
-    <decayedSelected>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="0.0" />
-      <entry key="S2" value="0.0" />
-      <entry key="S5" value="0.0" />
-      <entry key="S10" value="0.0" />
-      <entry key="S30" value="0.0" />
-      <entry key="S60" value="0.0" />
-      <entry key="M2" value="0.0" />
-      <entry key="M5" value="0.0" />
-      <entry key="M10" value="0.0" />
-      <entry key="M15" value="0.0" />
-      <entry key="M30" value="0.0" />
-      <entry key="H1" value="0.0" />
-      <entry key="H2" value="0.0" />
-      <entry key="H4" value="0.0" />
-      <entry key="D1" value="0.0" />
-      <entry key="W1" value="0.0" />
-    </decayedSelected>
-    <decayedShown>
-      <entry key="MS100" value="0.8950250709279725" />
-      <entry key="MS500" value="0.9780634734473393" />
-      <entry key="S2" value="0.9944701688849524" />
-      <entry key="S5" value="0.9979193827233472" />
-      <entry key="S10" value="1.0105103399315976" />
-      <entry key="S30" value="1.2261225994057399" />
-      <entry key="S60" value="1.4757271545470843" />
-      <entry key="M2" value="1.6897713224335318" />
-      <entry key="M5" value="1.8619591843347185" />
-      <entry key="M10" value="1.9284189947554944" />
-      <entry key="M15" value="1.9516914166221582" />
-      <entry key="M30" value="1.9755468814320047" />
-      <entry key="H1" value="1.9876978066243303" />
-      <entry key="H2" value="1.9938298776086296" />
-      <entry key="H4" value="1.9969101676514256" />
-      <entry key="D1" value="1.999484364028094" />
-      <entry key="W1" value="1.9999263214428122" />
-    </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8,
@@ -115,27 +32,6 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Git.CreateWorkingTree.LastParentPath": "C:/Users/Daniel/Documents/GitHub",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "20-inicializar-aplicação-react-e-estrutura-de-componentes",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Daniel/Documents/GitHub/studymatch-group12",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA 2026.1.3\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external"
-  }
-}]]></component>
   <component name="RunManager">
     <configuration name="StudymatchBackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="studymatch-backend" />
@@ -144,14 +40,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.25134.95" />
-        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.25134.95" />
-      </set>
-    </attachedChunks>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -162,8 +50,5 @@
       <updated>1791211573144</updated>
     </task>
     <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
   </component>
 </project>
