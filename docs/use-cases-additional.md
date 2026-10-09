@@ -41,3 +41,60 @@ Documentação dos 2 casos de uso criativos de valor acrescentado propostos pela
 * **Justificação de Valor Acrescentado:**
     - **Problema real:** Agrupamentos puramente automáticos baseados apenas em competências podem forçar o trabalho conjunto entre indivíduos com histórico de atritos graves ou ignorar sinergias prévias consolidadas.
     - **Impacto no StudyMatch:** Reduz a rejeição psicológica à ferramenta, aumentando a satisfação e a cooperação dos membros da equipa sem comprometer os objetivos pedagógicos do docente.
+
+## UC09: Consultar e Aceitar Proposta de Agrupamento
+- **Objetivo:** Permitir ao estudante visualizar a equipa gerada para uma determinada atividade de grupo e confirmar formalmente a sua atribuição.
+- **Ator Principal:** Estudante.
+- **Cenário Principal de Sucesso:**
+  1. O estudante acede à secção de atividades/agrupamentos na sua área pessoal.
+  2. Seleciona a unidade curricular e a atividade de grupo ativa.
+  3. O sistema apresenta a composição da equipa atribuída, exibindo os colegas de grupo, a sobreposição horária calculada e a complementaridade de competências.
+  4. O estudante clica no botão de confirmação para aceitar a alocação.
+  5. O sistema regista o estado de aceitação do estudante e atualiza o indicador visual da equipa.
+- **Fluxos Alternativos e Exceções:**
+  - **1a. Agrupamento em processamento:** O sistema notifica que a distribuição ainda se encontra em fase de rascunho/validação pelo docente.
+  - **4a. Expiração do prazo de confirmação:** O sistema altera automaticamente o estado do estudante para aceito por omissão (*default*) após a data limite.
+- **Regras de Negócio:**
+  - O grupo transita de estado rascunho (**DRAFT**) para confirmado (**CONFIRMED**) apenas após a validação do docente ou confirmação da maioria dos membros.
+- **Conceitos de Domínio:** `GroupAssignment`, `AssignmentStatus` (PENDING, CONFIRMED, EXPIRED), `TeamView`.
+- **Justificação de Valor Acrescentado:**
+  - **Problema real:** A falta de transparência e de confirmação explícita sobre a constituição das equipas gera incerteza sobre quem são os colegas e se todos estão cientes da alocação.
+  - **Impacto no StudyMatch:** Garante o compromisso inicial de cada estudante com a equipa e fornece visibilidade imediata sobre os elementos de contacto e sinergias do grupo.
+
+## UC10: Executar Motor de Agrupamento Automático
+- **Objetivo:** Permitir ao docente disparar a geração automática das equipas com base nas regras de agrupamento, matriz de competências, disponibilidade horária e preferências de afinidade.
+- **Ator Principal:** Docente.
+- **Cenário Principal de Sucesso:**
+  1. O docente acede à atividade de grupo previamente configurada na unidade curricular.
+  2. Seleciona a opção de geração automática de grupos.
+  3. O sistema executa o algoritmo de otimização cruzando os limites de dimensão, pesos de competências, janelas horárias comuns e restrições de afinidade.
+  4. O sistema gera uma proposta de distribuição e apresenta a métrica global de compatibilidade da turma.
+  5. O docente revê a distribuição e publica os grupos gerados.
+- **Fluxos Alternativos e Exceções:**
+  - **3a. Estudo de caso com número de alunos ímpar/sobrante:** O sistema alerta para a existência de um grupo com dimensão fora do intervalo padrão e sugere o ajuste manual de um membro.
+  - **4a. Rejeição da proposta:** O docente pode reexecutar o algoritmo alterando os pesos dos critérios ou efetuar ajustes manuais por *drag-and-drop*.
+- **Regras de Negócio:**
+  - A execução do algoritmo não altera de imediato os grupos visíveis aos estudantes até que o docente acione explicitamente a publicação.
+  - As restrições duras (tamanho do grupo) têm prioridade absoluta sobre as restrições suaves (afinidades e horários).
+- **Conceitos de Domínio:** `GroupGeneratorService`, `TeamDraft`, `CompatibilityScore`, `OptimizationPolicy`.
+- **Justificação de Valor Acrescentado:**
+  - **Problema real:** A formação manual de grupos em turmas grandes é um processo moroso, propenso a vieses e incapaz de cruzar eficientemente múltiplas variáveis complexas (horários, notas e preferências).
+  - **Impacto no StudyMatch:** Automatiza o processo nuclear da plataforma, garantindo equipas pedagogicamente equilibradas e logisticamente viáveis em questão de segundos.
+
+## UC11: Exportar Relatório de Grupos e Notificar Turma
+- **Objetivo:** Permitir ao docente exportar a distribuição final das equipas para formatos de folha de cálculo e enviar alertas informativos aos estudantes inscritos.
+- **Ator Principal:** Docente.
+- **Cenário Principal de Sucesso:**
+  1. O docente acede à sessão de agrupamento com estado publicado.
+  2. Seleciona a opção de exportação de dados e escolhe o formato pretendido (.CSV ou .XLSX).
+  3. O sistema gera e descarrega o ficheiro estruturado com os identificadores dos alunos, e-mails institucionais, nome da UC e número do grupo.
+  4. O docente aciona o comando de notificação global.
+  5. O sistema envia um alerta/e-mail para todos os estudantes inscritos a informar a disponibilização da constituição dos grupos.
+- **Fluxos Alternativos e Exceções:**
+  - **2a. Ausência de grupos publicados:** O sistema desativa as opções de exportação e emissão de notificações informando que a sessão está em rascunho.
+- **Regras de Negócio:**
+  - O formato do ficheiro exportado deve respeitar a estrutura padrão de pautas/listas da instituição de ensino.
+- **Conceitos de Domínio:** `GroupExportService`, `CSVReport`, `GroupNotification`, `AuditLog`.
+- **Justificação de Valor Acrescentado:**
+  - **Problema real:** A necessidade de introduzir manualmente a composição dos grupos nas plataformas de gestão académica da universidade ou no Moodle gera retrabalho administrativo para o docente.
+  - **Impacto no StudyMatch:** Facilita a integração com os processos administrativos existentes e assegura que nenhum estudante fica sem saber a que grupo pertence.
