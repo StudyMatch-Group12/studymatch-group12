@@ -81,20 +81,20 @@ Documentação dos 2 casos de uso criativos de valor acrescentado propostos pela
   - **Problema real:** A formação manual de grupos em turmas grandes é um processo moroso, propenso a vieses e incapaz de cruzar eficientemente múltiplas variáveis complexas (horários, notas e preferências).
   - **Impacto no StudyMatch:** Automatiza o processo nuclear da plataforma, garantindo equipas pedagogicamente equilibradas e logisticamente viáveis em questão de segundos.
 
-## UC11: Exportar Relatório de Grupos e Notificar Turma
-- **Objetivo:** Permitir ao docente exportar a distribuição final das equipas para formatos de folha de cálculo e enviar alertas informativos aos estudantes inscritos.
-- **Ator Principal:** Docente.
+## UC11: Consultar Detalhes da Equipa e Membros
+
+- **Objetivo:** Permitir ao estudante visualizar as informações de contacto, preferências de trabalho e mapa de competências dos colegas do seu grupo atribuído.
+- **Ator Principal:** Estudante.
 - **Cenário Principal de Sucesso:**
-  1. O docente acede à sessão de agrupamento com estado publicado.
-  2. Seleciona a opção de exportação de dados e escolhe o formato pretendido (.CSV ou .XLSX).
-  3. O sistema gera e descarrega o ficheiro estruturado com os identificadores dos alunos, e-mails institucionais, nome da UC e número do grupo.
-  4. O docente aciona o comando de notificação global.
-  5. O sistema envia um alerta/e-mail para todos os estudantes inscritos a informar a disponibilização da constituição dos grupos.
+  1. O estudante acede à área do seu grupo ativo na unidade curricular.
+  2. O sistema apresenta o painel da equipa com a lista dos membros do grupo.
+  3. O estudante seleciona um colega de equipa para ver os detalhes.
+  4. O sistema exibe o e-mail institucional do colega, a sua disponibilidade horária e as áreas de maior competência.
 - **Fluxos Alternativos e Exceções:**
-  - **2a. Ausência de grupos publicados:** O sistema desativa as opções de exportação e emissão de notificações informando que a sessão está em rascunho.
+  - **1a. Estudante ainda não alocado a um grupo:** O sistema exibe uma mensagem informativa a indicar que a atribuição de grupos ainda está pendente.
 - **Regras de Negócio:**
-  - O formato do ficheiro exportado deve respeitar a estrutura padrão de pautas/listas da instituição de ensino.
-- **Conceitos de Domínio:** `GroupExportService`, `CSVReport`, `GroupNotification`, `AuditLog`.
+  - Apenas membros pertencentes ao mesmo grupo têm permissão para visualizar os detalhes de contacto direto e horários entre si.
+- **Conceitos de Domínio:** `TeamMemberView`, `MemberDetails`, `PrivacyPolicy`.
 - **Justificação de Valor Acrescentado:**
-  - **Problema real:** A necessidade de introduzir manualmente a composição dos grupos nas plataformas de gestão académica da universidade ou no Moodle gera retrabalho administrativo para o docente.
-  - **Impacto no StudyMatch:** Facilita a integração com os processos administrativos existentes e assegura que nenhum estudante fica sem saber a que grupo pertence.
+  - **Problema real:** Após a formação automática do grupo, os estudantes precisam de uma forma rápida e centralizada para entrar em contacto com os colegas e perceber quem domina cada área do trabalho.
+  - **Impacto no StudyMatch:** Facilita a comunicação inicial e a divisão interna de tarefas com base no perfil de competências de cada membro, sem exigir integrações complexas.
