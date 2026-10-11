@@ -98,3 +98,72 @@ Documentação dos 2 casos de uso criativos de valor acrescentado propostos pela
 - **Justificação de Valor Acrescentado:**
   - **Problema real:** Após a formação automática do grupo, os estudantes precisam de uma forma rápida e centralizada para entrar em contacto com os colegas e perceber quem domina cada área do trabalho.
   - **Impacto no StudyMatch:** Facilita a comunicação inicial e a divisão interna de tarefas com base no perfil de competências de cada membro, sem exigir integrações complexas.
+
+  ### **UC12: Consultar Atividades de Grupo Disponíveis**
+
+
+- **Objetivo:** Permitir ao estudante consultar as atividades de grupo disponíveis nas unidades curriculares em que está inscrito, visualizando informações como o nome, a descrição e o estado de cada atividade.
+- **Ator Principal:** Estudante.
+- **Cenário Principal de Sucesso:**
+  1. O estudante acede à área de atividades de grupo da plataforma.
+  2. O sistema identifica as unidades curriculares em que o estudante está inscrito.
+  3. O sistema apresenta uma lista das atividades de grupo disponíveis nessas unidades curriculares.
+  4. O estudante consulta as informações de cada atividade, incluindo o nome, a descrição e o estado.
+- **Fluxos Alternativos e Exceções:**
+  - **3a. Não existem atividades disponíveis:** O sistema apresenta uma mensagem informativa a indicar que não existem atividades de grupo disponíveis nas unidades curriculares do estudante.
+  - **3b. Erro ao carregar as atividades:** O sistema apresenta uma mensagem de erro e permite ao estudante tentar novamente.
+- **Regras de Negócio:**
+  - Apenas estudantes autenticados podem consultar as atividades de grupo.
+  - Cada estudante apenas pode visualizar atividades associadas às unidades curriculares em que está inscrito.
+  - A consulta de atividades não permite alterar ou eliminar informações das mesmas.
+- **Conceitos de Domínio:** `GroupActivity`, `Course`, `Student`, `Enrollment`.
+- **Justificação de Valor Acrescentado:**
+  - **Problema real:** Os estudantes precisam de uma forma simples e centralizada de consultar as atividades de grupo disponíveis nas suas unidades curriculares, sem terem de procurar informações em diferentes locais.
+  - **Impacto no StudyMatch:** Facilita o acesso às atividades de grupo e melhora a organização académica dos estudantes, complementando as funcionalidades de definição de contextos de agrupamento e formação automática de equipas, sem exigir algoritmos adicionais complexos.
+
+  ### **UC13: Consultar Estudantes Inscritos numa Unidade Curricular**
+
+- **Objetivo:** Permitir ao docente consultar a lista de estudantes inscritos numa determinada unidade curricular, visualizando informações académicas básicas de cada estudante.
+- **Ator Principal:** Docente.
+- **Cenário Principal de Sucesso:**
+  1. O docente acede à área de gestão das suas unidades curriculares.
+  2. O sistema apresenta as unidades curriculares associadas ao docente.
+  3. O docente seleciona a unidade curricular que pretende consultar.
+  4. O sistema apresenta a lista de estudantes inscritos nessa unidade curricular.
+  5. O docente visualiza as informações básicas dos estudantes, incluindo o nome e o número de estudante.
+- **Fluxos Alternativos e Exceções:**
+  - **4a. Não existem estudantes inscritos:** O sistema apresenta uma mensagem informativa a indicar que não existem estudantes inscritos na unidade curricular selecionada.
+  - **4b. Erro ao carregar a lista de estudantes:** O sistema apresenta uma mensagem de erro e permite ao docente tentar novamente.
+- **Regras de Negócio:**
+  - Apenas docentes autenticados e autorizados podem consultar a lista de estudantes de uma unidade curricular.
+  - Cada docente apenas pode visualizar os estudantes inscritos nas unidades curriculares às quais está associado.
+  - A consulta da lista de estudantes não permite alterar ou eliminar os seus dados.
+- **Conceitos de Domínio:** `Student`, `Course`, `Enrollment`, `Teacher`.
+- **Justificação de Valor Acrescentado:**
+  - **Problema real:** Os docentes necessitam de consultar facilmente os estudantes inscritos nas suas unidades curriculares para acompanhar a participação nas atividades e organizar a formação de grupos.
+  - **Impacto no StudyMatch:** Facilita a identificação dos estudantes disponíveis para agrupamento e complementa as funcionalidades de definição de contextos de agrupamento e formação automática de equipas, sem exigir processamento complexo.
+
+  ### **UC14: Exportar Lista de Grupos Formados**
+
+- **Objetivo:** Permitir ao docente exportar a lista de grupos formados numa determinada atividade de uma unidade curricular, incluindo os estudantes pertencentes a cada grupo, para um ficheiro CSV.
+- **Ator Principal:** Docente.
+- **Cenário Principal de Sucesso:**
+  1. O docente acede à área de gestão de grupos da plataforma.
+  2. O sistema apresenta as unidades curriculares e atividades de agrupamento associadas ao docente.
+  3. O docente seleciona a atividade cujos grupos pretende exportar.
+  4. O sistema apresenta os grupos formados nessa atividade.
+  5. O docente seleciona a opção "Exportar Grupos".
+  6. O sistema gera um ficheiro CSV com a identificação dos grupos, os nomes e os números dos estudantes e a respetiva unidade curricular.
+  7. O docente descarrega o ficheiro para o seu dispositivo.
+- **Fluxos Alternativos e Exceções:**
+  - **4a. Ainda não existem grupos formados:** O sistema apresenta uma mensagem informativa a indicar que não existem grupos disponíveis para exportação.
+  - **6a. Erro ao gerar o ficheiro:** O sistema apresenta uma mensagem de erro e permite ao docente repetir a operação.
+- **Regras de Negócio:**
+  - Apenas docentes autenticados e autorizados podem exportar listas de grupos das atividades pelas quais são responsáveis.
+  - A exportação apenas inclui grupos efetivamente formados na atividade selecionada.
+  - O ficheiro exportado deve apresentar os dados de forma organizada, identificando claramente cada grupo e os respetivos membros.
+  - A exportação não altera a composição dos grupos nem os dados dos estudantes.
+- **Conceitos de Domínio:** `StudyGroup`, `GroupMember`, `Course`, `GroupActivity`, `GroupExport`.
+- **Justificação de Valor Acrescentado:**
+  - **Problema real:** Após a formação dos grupos, os docentes precisam frequentemente de consultar e partilhar a distribuição dos estudantes, sem terem de copiar manualmente a informação da plataforma.
+  - **Impacto no StudyMatch:** Facilita a organização e o acompanhamento dos grupos, permitindo obter rapidamente uma lista estruturada dos estudantes e das respetivas equipas, sem exigir integrações externas ou algoritmos adicionais.
