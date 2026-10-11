@@ -167,3 +167,60 @@ Documentação dos 2 casos de uso criativos de valor acrescentado propostos pela
 - **Justificação de Valor Acrescentado:**
   - **Problema real:** Após a formação dos grupos, os docentes precisam frequentemente de consultar e partilhar a distribuição dos estudantes, sem terem de copiar manualmente a informação da plataforma.
   - **Impacto no StudyMatch:** Facilita a organização e o acompanhamento dos grupos, permitindo obter rapidamente uma lista estruturada dos estudantes e das respetivas equipas, sem exigir integrações externas ou algoritmos adicionais.
+ 
+UC15: Consultar Notificações de Atividade e Agrupamento
+- Objetivo: Permitir ao estudante e ao docente consultar avisos do sistema sobre novas atividades de grupo, publicação de equipas e prazos de confirmação.
+- Ator Principal: Estudante / Docente.
+- Cenário Principal de Sucesso:
+  1. O utilizador acede à área pessoal e seleciona o centro de notificações.
+  2. O sistema lista as notificações não lidas e recentes associadas às suas unidades curriculares.
+  3. O utilizador seleciona uma notificação para consultar o detalhe.
+  4. O sistema marca a notificação como lida e redireciona o utilizador para a página correspondente (ex.: atividade ou equipa).
+- Fluxos Alternativos e Exceções:
+  - 2a. Não existem notificações: O sistema apresenta a indicação de que não há avisos pendentes.
+- Regras de Negócio:
+  - O utilizador apenas pode visualizar notificações direcionadas à sua conta.
+  - As notificações são ordenadas da mais recente para a mais antiga.
+- Conceitos de Domínio: Notification, NotificationType, User, Activity.
+- Justificação de Valor Acrescentado:
+  - Problema real: Os estudantes perdem frequentemente os prazos de confirmação de equipas ou o lançamento de novas atividades por falta de alertas centralizados.
+  - Impacto no StudyMatch: Aumenta o envolvimento dos utilizadores e reduz atrasos na formação e validação dos grupos.
+
+UC16: Atualizar Informação de Contacto Alternativo
+- Objetivo: Permitir ao estudante indicar um canal de contacto rápido adicional (ex.: Discord, WhatsApp ou telefone) para partilha restrita com os colegas da sua equipa.
+- Ator Principal: Estudante.
+- Cenário Principal de Sucesso:
+  1. O estudante acede à secção de edição do seu perfil.
+  2. Introduz o identificador ou número do canal de comunicação preferencial.
+  3. O sistema valida o formato da informação inserida.
+  4. O estudante guarda a alteração.
+  5. O sistema atualiza o registo de contacto no perfil.
+- Fluxos Alternativos e Exceções:
+  - 3a. Formato de contacto inválido: O sistema alerta para a inconsistência e solicita correção antes de gravar.
+- Regras de Negócio:
+  - O contacto alternativo é de preenchimento facultativo.
+  - A visibilidade deste dado está estritamente restrita aos colegas pertencentes à mesma equipa formalmente constituída.
+- Conceitos de Domínio: StudentProfile, ContactInfo, PrivacySetting.
+- Justificação de Valor Acrescentado:
+  - Problema real: A comunicação restrita ao e-mail institucional é frequentemente lenta para a dinâmica ágil de projetos académicos.
+  - Impacto no StudyMatch: Agiliza a comunicação interna do grupo logo após a formação da equipa, mantendo a privacidade protegida perante os restantes colegas da turma.
+
+UC17: Registar Feedback de Colaboração da Equipa
+- Objetivo: Permitir ao estudante submeter uma apreciação qualitativa e objetiva sobre o funcionamento e pontualidade do grupo no encerramento de uma atividade.
+- Ator Principal: Estudante.
+- Cenário Principal de Sucesso:
+  1. O estudante acede ao módulo da atividade de grupo concluída.
+  2. Seleciona o formulário de encerramento e autoavaliação da dinâmica da equipa.
+  3. Preenche a escala de satisfação quanto à comunicação, divisão de tarefas e cumprimento de prazos.
+  4. O sistema valida o preenchimento de todos os campos obrigatórios.
+  5. O estudante submete o formulário e o sistema confirma a gravação com sucesso.
+- Fluxos Alternativos e Exceções:
+  - 1a. Atividade ainda em curso: O sistema informa que o formulário de feedback apenas fica disponível após o fecho da atividade.
+  - 5a. Submissão duplicada: O sistema impede o envio e avisa que a resposta já se encontra registada.
+- Regras de Negócio:
+  - Cada estudante só pode submeter uma resposta por atividade de grupo.
+  - O feedback é anónimo perante os colegas de equipa e consultável apenas pelo docente da unidade curricular.
+- Conceitos de Domínio: TeamFeedback, ActivityEvaluation, GroupMember, TeacherReview.
+- Justificação de Valor Acrescentado:
+  - Problema real: Dificuldade dos docentes em identificar assimetrias de esforço e problemas de comunicação interna nos trabalhos de grupo.
+  - Impacto no StudyMatch: Fornece dados úteis ao docente e cria histórico para afinar recomendações e restrições de compatibilidade em sprints e semestres futuros.
