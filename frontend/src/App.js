@@ -1,15 +1,13 @@
 import React from 'react';
 import './App.css';
-import Header from './components/Header';
-import StudentProfile from './pages/StudentProfile';
+import RegistoEstudante from './components/RegistoEstudante';
 
 function App() {
-  return (
-      <div className="App">
-        <Header />
-        <StudentProfile />
-      </div>
-  );
+    return (
+        <div className="App">
+            <RegistoEstudante />
+        </div>
+    );
 }
 
 export default App;
