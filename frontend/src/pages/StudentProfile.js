@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import StudentCard from '../components/StudentCard';
-import { getStatus } from '../services/api';
+import { getStatus, getCompetencyProfile } from '../services/api';
 
 export default function StudentProfile() {
     const [backendStatus, setBackendStatus] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [competencias, setCompetencias] = useState([]);
+    const [competenciasLoading, setCompetenciasLoading] = useState(true);
+    const [competenciasError, setCompetenciasError] = useState(null);
     const dummyStudent = {
         name: 'Estudante Exemplo',
         number: 'a12345',
@@ -23,6 +26,22 @@ export default function StudentProfile() {
             })
             .finally(() => {
                 setLoading(false);
+            });
+    }, []);
+
+    useEffect(() => {
+        getCompetencyProfile('a12345')
+            .then((response) => {
+                setCompetencias(response.data);
+                setCompetenciasError(null);
+            })
+            .catch(() => {
+                setCompetenciasError(
+                    'Não foi possível carregar o perfil de competências.'
+                );
+            })
+            .finally(() => {
+                setCompetenciasLoading(false);
             });
     }, []);
 
@@ -47,10 +66,37 @@ export default function StudentProfile() {
             </section>
 
             <section style={{ marginTop: '2rem' }}>
-                <h3>Estratégia Cold-Start & Competências</h3>
-                <p>
-                    A carregar perfil inicial ou dados históricos do estudante...
-                </p>
+                <h3>Perfil de Competências</h3>
+
+                {competenciasLoading && (
+                    <p>A carregar competências...</p>
+                )}
+
+                {competenciasError && (
+                    <p>{competenciasError}</p>
+                )}
+
+                {!competenciasLoading &&
+                    !competenciasError &&
+                    competencias.length === 0 && (
+                        <p>
+                            Ainda não existem competências calculadas para este estudante.
+                        </p>
+                    )}
+
+                {competencias.length > 0 && (
+                    <ul>
+                        {competencias.map((competencia, index) => (
+                            <li key={index}>
+                                <strong>{competencia.nome}</strong>
+                                {' — '}
+                                Nível {competencia.nivel}
+                                {competencia.descricao &&
+                                    ` — ${competencia.descricao}`}
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </section>
         </main>
     );
