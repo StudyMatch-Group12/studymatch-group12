@@ -13,11 +13,20 @@ public class PerfilCompetencias {
 
     private LocalDateTime dataAtualizacao;
 
+    @OneToOne(optional = false)
+    @JoinColumn(
+            name = "estudante_id",
+            nullable = false,
+            unique = true
+    )
+    private Estudante estudante;
+
     public PerfilCompetencias() {
     }
 
-    public PerfilCompetencias(LocalDateTime dataAtualizacao) {
+    public PerfilCompetencias(LocalDateTime dataAtualizacao, Estudante estudante) {
         this.dataAtualizacao = dataAtualizacao;
+        this.estudante = estudante;
     }
 
     public Long getId() {
@@ -30,5 +39,13 @@ public class PerfilCompetencias {
 
     public void setDataAtualizacao(LocalDateTime dataAtualizacao) {
         this.dataAtualizacao = dataAtualizacao;
+    }
+
+    public Estudante getEstudante() {
+        return estudante;
+    }
+
+    public void setEstudante(Estudante estudante) {
+        this.estudante = estudante;
     }
 }
