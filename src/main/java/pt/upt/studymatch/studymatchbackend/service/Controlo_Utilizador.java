@@ -1,27 +1,17 @@
 package pt.upt.studymatch.studymatchbackend.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pt.upt.studymatch.studymatchbackend.model.Estudante;
 import pt.upt.studymatch.studymatchbackend.repository.EstudanteRepository;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 
 @Service
 public class Controlo_Utilizador {
-
-    // Public sort keys accepted by the API, mapped to the entity attributes they sort by
-    private static final Map<String, String> SORTABLE_FIELDS = Map.of(
-            "name", "nome",
-            "number", "numeroEstudante",
-            "course", "curso"
-    );
-    private static final String DEFAULT_SORT_FIELD = "name";
 
     private final EstudanteRepository estudanteRepository;
 
@@ -91,42 +81,5 @@ public class Controlo_Utilizador {
     @Transactional(readOnly = true)
     public Optional<Estudante> obterEstudantePorNumero(String numeroEstudante) {
         return estudanteRepository.findByNumeroEstudante(numeroEstudante);
-    }
-
-    @Transactional(readOnly = true)
-    public List<Estudante> searchStudents(String searchTerm, String course, String sortBy, String direction) {
-        String sortKey = isBlank(sortBy) ? DEFAULT_SORT_FIELD : sortBy.trim().toLowerCase();
-        String sortField = SORTABLE_FIELDS.get(sortKey);
-        if (sortField == null) {
-            throw new IllegalArgumentException("Invalid sort field: " + sortBy + ". Allowed values: name, number, course.");
-        }
-
-        Sort.Direction sortDirection;
-        if (isBlank(direction) || direction.trim().equalsIgnoreCase("asc")) {
-            sortDirection = Sort.Direction.ASC;
-        } else if (direction.trim().equalsIgnoreCase("desc")) {
-            sortDirection = Sort.Direction.DESC;
-        } else {
-            throw new IllegalArgumentException("Invalid sort direction: " + direction + ". Allowed values: asc, desc.");
-        }
-
-        return estudanteRepository.searchStudents(
-                normalizeFilter(searchTerm),
-                normalizeFilter(course),
-                Sort.by(sortDirection, sortField)
-        );
-    }
-
-    @Transactional(readOnly = true)
-    public List<String> getAvailableCourses() {
-        return estudanteRepository.findDistinctCourses();
-    }
-
-    private static String normalizeFilter(String value) {
-        return isBlank(value) ? null : value.trim();
-    }
-
-    private static boolean isBlank(String value) {
-        return value == null || value.trim().isEmpty();
     }
 }
