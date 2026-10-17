@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { buildStudentQueryParams } from '../utils/studentFilters';
 
 const api = axios.create({
     baseURL: '/api',
@@ -9,15 +8,5 @@ const api = axios.create({
 });
 
 export const getStatus = () => api.get('/status');
-
-// filters: { search, course, sortBy, direction } - empty values are not sent
-export const searchStudents = (filters) =>
-    api.get('/estudantes', { params: buildStudentQueryParams(filters) });
-
-export const getCourses = () => api.get('/estudantes/courses');
-
-export const getStudentById = (studentId) => api.get(`/estudantes/${studentId}`);
-
-export const getStudentCompetencies = (studentId) => api.get(`/estudantes/${studentId}/competencies`);
 
 export default api;

@@ -1,81 +1,57 @@
 import React, { useEffect, useState } from 'react';
 import StudentCard from '../components/StudentCard';
-import CompetencyRadarChart from '../components/CompetencyRadarChart';
-import { getStudentById, getStudentCompetencies } from '../services/api';
-import { formatCompetenciesForRadar, summarizeCompetencies } from '../utils/chartData';
-import './Students.css';
+import { getStatus } from '../services/api';
 
-export default function StudentProfile({ studentId, onBack }) {
-    const [student, setStudent] = useState(null);
-    const [radarData, setRadarData] = useState([]);
+export default function StudentProfile() {
+    const [backendStatus, setBackendStatus] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    const dummyStudent = {
+        name: 'Estudante Exemplo',
+        number: 'a12345',
+        degree: 'Engenharia Informática',
+    };
+     
     useEffect(() => {
-        setLoading(true);
-        setError(null);
-
-        Promise.all([getStudentById(studentId), getStudentCompetencies(studentId)])
-            .then(([studentResponse, competenciesResponse]) => {
-                setStudent(studentResponse.data);
-                setRadarData(formatCompetenciesForRadar(competenciesResponse.data));
+        getStatus()
+            .then((response) => {
+                setBackendStatus(response.data);
+                setError(null);
             })
-            .catch((err) => {
-                setError(err.response?.status === 404
-                    ? 'Student not found.'
-                    : 'Could not load the student profile. Please try again.');
+            .catch(() => {
+                setError('Não foi possível comunicar com o backend.');
             })
-            .finally(() => setLoading(false));
-    }, [studentId]);
+            .finally(() => {
+                setLoading(false);
+            });
+    }, []);
 
-    const summary = summarizeCompetencies(radarData);
+     return (
+        <main style={{ padding: '2rem' }}>
+            <h2>Perfil do Estudante</h2>
 
-    return (
-        <main className="students-page">
-            {onBack && (
-                <button type="button" className="link-button" onClick={onBack}>
-                    ← Back to students
-                </button>
-            )}
+            <StudentCard student={dummyStudent} />
 
-            <h2>Student Profile</h2>
+            <section style={{ marginTop: '2rem' }}>
+                <h3>Estado do Backend</h3>
 
-            {loading && <p>Loading profile...</p>}
-            {error && <p className="error-message">{error}</p>}
+                {loading && <p>A verificar ligação...</p>}
 
-            {!loading && !error && student && (
-                <>
-                    <StudentCard
-                        student={{
-                            name: student.nome,
-                            number: student.numeroEstudante,
-                            degree: student.curso,
-                        }}
-                    />
+                {error && <p>{error}</p>}
 
-                    <section className="profile-section">
-                        <h3>Competency Map</h3>
-                        <CompetencyRadarChart data={radarData} />
+                {backendStatus && (
+                    <pre>
+                        {JSON.stringify(backendStatus, null, 2)}
+                    </pre>
+                )}
+            </section>
 
-                        {radarData.length > 0 && (
-                            <div className="competency-summary">
-                                <div>
-                                    <span className="summary-label">Average level</span>
-                                    <strong>{summary.average}</strong>
-                                </div>
-                                <div>
-                                    <span className="summary-label">Strongest</span>
-                                    <strong>{summary.strongest}</strong>
-                                </div>
-                                <div>
-                                    <span className="summary-label">Needs improvement</span>
-                                    <strong>{summary.weakest}</strong>
-                                </div>
-                            </div>
-                        )}
-                    </section>
-                </>
-            )}
+            <section style={{ marginTop: '2rem' }}>
+                <h3>Estratégia Cold-Start & Competências</h3>
+                <p>
+                    A carregar perfil inicial ou dados históricos do estudante...
+                </p>
+            </section>
         </main>
     );
 }

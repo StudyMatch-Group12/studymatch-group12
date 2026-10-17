@@ -35,25 +35,10 @@ public class EstudanteController {
             return new ResponseEntity<>("Erro interno no servidor: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    // GET /api/estudantes?search=ana&course=Gestão&sortBy=name&direction=asc
-    // All parameters are optional; without them every student is returned, sorted by name.
     @GetMapping
-    public ResponseEntity<?> searchStudents(@RequestParam(required = false) String search,
-                                            @RequestParam(required = false) String course,
-                                            @RequestParam(required = false) String sortBy,
-                                            @RequestParam(required = false) String direction) {
-        try {
-            List<Estudante> students = controloUtilizador.searchStudents(search, course, sortBy, direction);
-            return new ResponseEntity<>(students, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    // Distinct course names, used to populate the course filter in the frontend
-    @GetMapping("/courses")
-    public ResponseEntity<List<String>> getAvailableCourses() {
-        return new ResponseEntity<>(controloUtilizador.getAvailableCourses(), HttpStatus.OK);
+    public ResponseEntity<List<Estudante>> obterTodosEstudantes() {
+        List<Estudante> estudantes = controloUtilizador.obterTodosEstudantes();
+        return new ResponseEntity<>(estudantes, HttpStatus.OK); // Retorna 200 OK
     }
     @GetMapping("/{id}")
     public ResponseEntity<Estudante> obterEstudantePorId(@PathVariable Long id) {
