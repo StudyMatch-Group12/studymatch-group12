@@ -32,6 +32,9 @@ class AcademicHistoryServiceTest {
     private CourseUnitRepository courseUnitRepository;
 
     @Mock
+    private PerfilCompetenciasService perfilCompetenciasService;
+
+    @Mock
     private EstudanteRepository estudanteRepository;
 
     @InjectMocks

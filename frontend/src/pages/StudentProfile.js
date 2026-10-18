@@ -10,7 +10,6 @@ export default function StudentProfile({ studentId, onBack }) {
     const [radarData, setRadarData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
     useEffect(() => {
         setLoading(true);
         setError(null);
