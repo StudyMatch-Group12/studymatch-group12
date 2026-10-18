@@ -22,6 +22,7 @@ export const getCourses = () => api.get('/estudantes/courses');
 
 export const getStudentById = (studentId) => api.get(`/estudantes/${studentId}`);
 
-export const getStudentCompetencies = (studentId) => api.get(`/estudantes/${studentId}/competencies`);
+export const getStudentCompetencies = (numeroEstudante) =>
+    api.get(`/competencias/estudantes/${numeroEstudante}`);
 
 export default api;
