@@ -1,103 +1,80 @@
 import React, { useEffect, useState } from 'react';
 import StudentCard from '../components/StudentCard';
-import { getStatus, getCompetencyProfile } from '../services/api';
+import CompetencyRadarChart from '../components/CompetencyRadarChart';
+import { getStudentById, getStudentCompetencies } from '../services/api';
+import { formatCompetenciesForRadar, summarizeCompetencies } from '../utils/chartData';
+import './Students.css';
 
-export default function StudentProfile() {
-    const [backendStatus, setBackendStatus] = useState(null);
+export default function StudentProfile({ studentId, onBack }) {
+    const [student, setStudent] = useState(null);
+    const [radarData, setRadarData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [competencias, setCompetencias] = useState([]);
-    const [competenciasLoading, setCompetenciasLoading] = useState(true);
-    const [competenciasError, setCompetenciasError] = useState(null);
-    const dummyStudent = {
-        name: 'Estudante Exemplo',
-        number: 'a12345',
-        degree: 'Engenharia Informática',
-    };
-     
     useEffect(() => {
-        getStatus()
-            .then((response) => {
-                setBackendStatus(response.data);
-                setError(null);
+        setLoading(true);
+        setError(null);
+
+        Promise.all([getStudentById(studentId), getStudentCompetencies(studentId)])
+            .then(([studentResponse, competenciesResponse]) => {
+                setStudent(studentResponse.data);
+                setRadarData(formatCompetenciesForRadar(competenciesResponse.data));
             })
-            .catch(() => {
-                setError('Não foi possível comunicar com o backend.');
+            .catch((err) => {
+                setError(err.response?.status === 404
+                    ? 'Student not found.'
+                    : 'Could not load the student profile. Please try again.');
             })
-            .finally(() => {
-                setLoading(false);
-            });
-    }, []);
+            .finally(() => setLoading(false));
+    }, [studentId]);
 
-    useEffect(() => {
-        getCompetencyProfile('a12345')
-            .then((response) => {
-                setCompetencias(response.data);
-                setCompetenciasError(null);
-            })
-            .catch(() => {
-                setCompetenciasError(
-                    'Não foi possível carregar o perfil de competências.'
-                );
-            })
-            .finally(() => {
-                setCompetenciasLoading(false);
-            });
-    }, []);
+    const summary = summarizeCompetencies(radarData);
 
-     return (
-        <main style={{ padding: '2rem' }}>
-            <h2>Perfil do Estudante</h2>
+    return (
+        <main className="students-page">
+            {onBack && (
+                <button type="button" className="link-button" onClick={onBack}>
+                    ← Back to students
+                </button>
+            )}
 
-            <StudentCard student={dummyStudent} />
+            <h2>Student Profile</h2>
 
-            <section style={{ marginTop: '2rem' }}>
-                <h3>Estado do Backend</h3>
+            {loading && <p>Loading profile...</p>}
+            {error && <p className="error-message">{error}</p>}
 
-                {loading && <p>A verificar ligação...</p>}
+            {!loading && !error && student && (
+                <>
+                    <StudentCard
+                        student={{
+                            name: student.nome,
+                            number: student.numeroEstudante,
+                            degree: student.curso,
+                        }}
+                    />
 
-                {error && <p>{error}</p>}
+                    <section className="profile-section">
+                        <h3>Competency Map</h3>
+                        <CompetencyRadarChart data={radarData} />
 
-                {backendStatus && (
-                    <pre>
-                        {JSON.stringify(backendStatus, null, 2)}
-                    </pre>
-                )}
-            </section>
-
-            <section style={{ marginTop: '2rem' }}>
-                <h3>Perfil de Competências</h3>
-
-                {competenciasLoading && (
-                    <p>A carregar competências...</p>
-                )}
-
-                {competenciasError && (
-                    <p>{competenciasError}</p>
-                )}
-
-                {!competenciasLoading &&
-                    !competenciasError &&
-                    competencias.length === 0 && (
-                        <p>
-                            Ainda não existem competências calculadas para este estudante.
-                        </p>
-                    )}
-
-                {competencias.length > 0 && (
-                    <ul>
-                        {competencias.map((competencia, index) => (
-                            <li key={index}>
-                                <strong>{competencia.nome}</strong>
-                                {' — '}
-                                Nível {competencia.nivel}
-                                {competencia.descricao &&
-                                    ` — ${competencia.descricao}`}
-                            </li>
-                        ))}
-                    </ul>
-                )}
-            </section>
+                        {radarData.length > 0 && (
+                            <div className="competency-summary">
+                                <div>
+                                    <span className="summary-label">Average level</span>
+                                    <strong>{summary.average}</strong>
+                                </div>
+                                <div>
+                                    <span className="summary-label">Strongest</span>
+                                    <strong>{summary.strongest}</strong>
+                                </div>
+                                <div>
+                                    <span className="summary-label">Needs improvement</span>
+                                    <strong>{summary.weakest}</strong>
+                                </div>
+                            </div>
+                        )}
+                    </section>
+                </>
+            )}
         </main>
     );
 }

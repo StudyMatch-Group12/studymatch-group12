@@ -1,0 +1,158 @@
+.students-page {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    text-align: left;
+}
+
+.filters-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.filters-bar input,
+.filters-bar select,
+.filters-bar button {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    background: #fff;
+}
+
+.filters-bar input {
+    flex: 1 1 240px;
+}
+
+.filters-bar button {
+    cursor: pointer;
+}
+
+.link-button {
+    border: none !important;
+    background: none !important;
+    color: #4f46e5;
+    cursor: pointer;
+    padding: 0.5rem 0;
+    font-size: 0.95rem;
+}
+
+.results-count {
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.students-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.students-table th,
+.students-table td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.students-table th {
+    background: #f9fafb;
+    font-weight: 600;
+}
+
+.students-table tbody tr {
+    cursor: pointer;
+}
+
+.students-table tbody tr:hover {
+    background: #eef2ff;
+}
+
+.error-message {
+    color: #b91c1c;
+}
+
+.empty-state {
+    color: #6b7280;
+}
+
+.profile-section {
+    margin-top: 2rem;
+}
+
+.competency-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.competency-summary > div {
+    flex: 1 1 160px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+}
+
+.summary-label {
+    display: block;
+    color: #6b7280;
+    font-size: 0.85rem;
+}
+
+.competency-bars {
+    list-style: none;
+    padding: 0;
+}
+
+.competency-bars li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.competency-bar-label {
+    width: 160px;
+}
+
+.competency-bar-track {
+    flex: 1;
+    height: 10px;
+    background: #e5e7eb;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.competency-bar-fill {
+    display: block;
+    height: 100%;
+    background: #4f46e5;
+}
+
+.competency-bar-value {
+    width: 32px;
+    text-align: right;
+}
+
+.app-nav {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: #1f2937;
+}
+
+.app-nav button {
+    background: none;
+    border: none;
+    color: #d1d5db;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.app-nav button.active {
+    background: #374151;
+    color: #fff;
+}
