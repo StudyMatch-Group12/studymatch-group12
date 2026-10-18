@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import StudentCard from '../components/StudentCard';
 import CompetencyRadarChart from '../components/CompetencyRadarChart';
 import { getStudentById, getStudentCompetencies } from '../services/api';
-import { formatCompetenciesForRadar, summarizeCompetencies } from '../utils/chartData';
+import { formatCompetenciesForRadar, summarizeCompetencies, MAX_LEVEL } from '../utils/chartData';
 import './Students.css';
 
 export default function StudentProfile({ studentId, onBack }) {
@@ -10,13 +10,18 @@ export default function StudentProfile({ studentId, onBack }) {
     const [radarData, setRadarData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
     useEffect(() => {
         setLoading(true);
         setError(null);
 
-        Promise.all([getStudentById(studentId), getStudentCompetencies(studentId)])
-            .then(([studentResponse, competenciesResponse]) => {
+        // The competency profile API is keyed by student number, so load the student first
+        getStudentById(studentId)
+            .then((studentResponse) => {
                 setStudent(studentResponse.data);
+                return getStudentCompetencies(studentResponse.data.numeroEstudante);
+            })
+            .then((competenciesResponse) => {
                 setRadarData(formatCompetenciesForRadar(competenciesResponse.data));
             })
             .catch((err) => {
@@ -60,7 +65,7 @@ export default function StudentProfile({ studentId, onBack }) {
                             <div className="competency-summary">
                                 <div>
                                     <span className="summary-label">Average level</span>
-                                    <strong>{summary.average}</strong>
+                                    <strong>{summary.average} / {MAX_LEVEL}</strong>
                                 </div>
                                 <div>
                                     <span className="summary-label">Strongest</span>

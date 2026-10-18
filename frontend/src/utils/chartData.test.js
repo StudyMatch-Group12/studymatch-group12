@@ -1,51 +1,49 @@
 import { formatCompetenciesForRadar, summarizeCompetencies, MAX_LEVEL } from './chartData';
 
 describe('formatCompetenciesForRadar', () => {
-    test('maps API data to radar points sorted by competency name', () => {
+    test('maps the competency profile API response to radar points sorted by name', () => {
         const apiData = [
-            { competency: 'Teamwork', level: 70, source: 'SELF_ASSESSMENT' },
-            { competency: 'Databases', level: 40, source: 'ACADEMIC_HISTORY' },
+            { nome: 'Teamwork', descricao: 'Works well in groups', nivel: 4, origem: 'HISTORICO_ACADEMICO' },
+            { nome: 'Databases', descricao: 'SQL and modelling', nivel: 2, origem: 'HISTORICO_ACADEMICO' },
         ];
 
         expect(formatCompetenciesForRadar(apiData)).toEqual([
-            { competency: 'Databases', level: 40, fullMark: MAX_LEVEL },
-            { competency: 'Teamwork', level: 70, fullMark: MAX_LEVEL },
+            { competency: 'Databases', description: 'SQL and modelling', level: 2, fullMark: MAX_LEVEL },
+            { competency: 'Teamwork', description: 'Works well in groups', level: 4, fullMark: MAX_LEVEL },
         ]);
     });
 
-    test('clamps levels to the 0-100 range and rounds decimals', () => {
+    test('clamps levels to the 0-5 range and rounds decimals', () => {
         const apiData = [
-            { competency: 'A', level: 150 },
-            { competency: 'B', level: -10 },
-            { competency: 'C', level: 49.6 },
+            { nome: 'A', nivel: 9 },
+            { nome: 'B', nivel: -1 },
+            { nome: 'C', nivel: 3.6 },
         ];
 
-        expect(formatCompetenciesForRadar(apiData).map((point) => point.level)).toEqual([100, 0, 50]);
+        expect(formatCompetenciesForRadar(apiData).map((point) => point.level)).toEqual([5, 0, 4]);
     });
 
     test('ignores entries without a name or with an invalid level', () => {
         const apiData = [
-            { competency: '', level: 50 },
-            { competency: 'Valid', level: 60 },
-            { competency: 'NoLevel', level: null },
-            { competency: 'Text', level: 'abc' },
+            { nome: '', nivel: 3 },
+            { nome: 'Valid', nivel: 3 },
+            { nome: 'NoLevel', nivel: null },
+            { nome: 'Text', nivel: 'abc' },
             null,
         ];
 
         expect(formatCompetenciesForRadar(apiData)).toEqual([
-            { competency: 'Valid', level: 60, fullMark: MAX_LEVEL },
+            { competency: 'Valid', description: '', level: 3, fullMark: MAX_LEVEL },
         ]);
     });
 
     test('keeps the highest level when a competency is repeated', () => {
         const apiData = [
-            { competency: 'Programming', level: 30 },
-            { competency: 'Programming', level: 80 },
+            { nome: 'Programming', nivel: 2 },
+            { nome: 'Programming', nivel: 5 },
         ];
 
-        expect(formatCompetenciesForRadar(apiData)).toEqual([
-            { competency: 'Programming', level: 80, fullMark: MAX_LEVEL },
-        ]);
+        expect(formatCompetenciesForRadar(apiData).map((point) => point.level)).toEqual([5]);
     });
 
     test('returns an empty array for missing or invalid input', () => {
@@ -56,15 +54,15 @@ describe('formatCompetenciesForRadar', () => {
 });
 
 describe('summarizeCompetencies', () => {
-    test('calculates average, strongest and weakest competency', () => {
+    test('calculates average (one decimal), strongest and weakest competency', () => {
         const radarData = [
-            { competency: 'Databases', level: 40, fullMark: 100 },
-            { competency: 'Programming', level: 90, fullMark: 100 },
-            { competency: 'Teamwork', level: 65, fullMark: 100 },
+            { competency: 'Databases', level: 2, fullMark: MAX_LEVEL },
+            { competency: 'Programming', level: 5, fullMark: MAX_LEVEL },
+            { competency: 'Teamwork', level: 4, fullMark: MAX_LEVEL },
         ];
 
         expect(summarizeCompetencies(radarData)).toEqual({
-            average: 65,
+            average: 3.7,
             strongest: 'Programming',
             weakest: 'Databases',
         });
