@@ -24,9 +24,12 @@ export default function CompetencyRadarChart({ data }) {
                     <li key={item.competency}>
                         <span className="competency-bar-label">{item.competency}</span>
                         <span className="competency-bar-track">
-                            <span className="competency-bar-fill" style={{ width: `${item.level}%` }} />
+                            <span
+                                className="competency-bar-fill"
+                                style={{ width: `${(item.level / MAX_LEVEL) * 100}%` }}
+                            />
                         </span>
-                        <span className="competency-bar-value">{item.level}</span>
+                        <span className="competency-bar-value">{item.level}/{MAX_LEVEL}</span>
                     </li>
                 ))}
             </ul>
@@ -39,7 +42,7 @@ export default function CompetencyRadarChart({ data }) {
                 <RadarChart data={data} outerRadius="75%">
                     <PolarGrid />
                     <PolarAngleAxis dataKey="competency" />
-                    <PolarRadiusAxis angle={90} domain={[MIN_LEVEL, MAX_LEVEL]} tickCount={6} />
+                    <PolarRadiusAxis angle={90} domain={[MIN_LEVEL, MAX_LEVEL]} tickCount={MAX_LEVEL + 1} />
                     <Radar
                         name="Proficiency level"
                         dataKey="level"
