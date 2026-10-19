@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import StudentCard from '../components/StudentCard';
 import CompetencyRadarChart from '../components/CompetencyRadarChart';
-import { getStudentById, getStudentCompetencies } from '../services/api';
+import ColdStartOnboarding from '../components/ColdStartOnboarding';
+import { getStudentById, getStudentCompetencies, getStudentEnrollments, getCompetencies } from '../services/api';
 import { formatCompetenciesForRadar, summarizeCompetencies, MAX_LEVEL } from '../utils/chartData';
 import './Students.css';
 
@@ -10,19 +11,32 @@ export default function StudentProfile({ studentId, onBack }) {
     const [radarData, setRadarData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [onboardingCompetencies, setOnboardingCompetencies] = useState(null);
+    const [isProvisional, setIsProvisional] = useState(false);
 
     useEffect(() => {
         setLoading(true);
         setError(null);
+        setOnboardingCompetencies(null);
 
         // The competency profile API is keyed by student number, so load the student first
         getStudentById(studentId)
             .then((studentResponse) => {
                 setStudent(studentResponse.data);
-                return getStudentCompetencies(studentResponse.data.numeroEstudante);
+                return Promise.all([
+                    getStudentCompetencies(studentResponse.data.numeroEstudante),
+                    getStudentEnrollments(studentId),
+                ]);
             })
-            .then((competenciesResponse) => {
-                setRadarData(formatCompetenciesForRadar(competenciesResponse.data));
+            .then(async ([competenciesResponse, enrollmentsResponse]) => {
+                const competencies = competenciesResponse.data;
+                const hasGrades = enrollmentsResponse.data.some((item) => item.grade != null);
+                setRadarData(formatCompetenciesForRadar(competencies));
+                setIsProvisional(competencies.some((item) => item.origem === 'AUTOAVALIACAO'));
+                if (!hasGrades && competencies.length === 0) {
+                    const catalogResponse = await getCompetencies();
+                    setOnboardingCompetencies(catalogResponse.data);
+                }
             })
             .catch((err) => {
                 setError(err.response?.status === 404
@@ -31,6 +45,13 @@ export default function StudentProfile({ studentId, onBack }) {
             })
             .finally(() => setLoading(false));
     }, [studentId]);
+
+    const refreshProfile = async () => {
+        const response = await getStudentCompetencies(student.numeroEstudante);
+        setRadarData(formatCompetenciesForRadar(response.data));
+        setIsProvisional(true);
+        setOnboardingCompetencies(null);
+    };
 
     const summary = summarizeCompetencies(radarData);
 
@@ -56,6 +77,12 @@ export default function StudentProfile({ studentId, onBack }) {
                             degree: student.curso,
                         }}
                     />
+
+                    {onboardingCompetencies?.length > 0 && (
+                        <ColdStartOnboarding studentId={studentId} competencies={onboardingCompetencies}
+                            onSaved={refreshProfile} />
+                    )}
+                    {isProvisional && <p className="profile-notice">Provisional profile based on self-assessment.</p>}
 
                     <section className="profile-section">
                         <h3>Competency Map</h3>

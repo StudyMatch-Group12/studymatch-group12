@@ -24,5 +24,8 @@ export const getStudentById = (studentId) => api.get(`/estudantes/${studentId}`)
 
 export const getStudentCompetencies = (numeroEstudante) =>
     api.get(`/competencias/estudantes/${numeroEstudante}`);
+export const getCompetencies = () => api.get('/competencias');
+export const createColdStartProfile = (studentId, data) =>
+    api.post(`/estudantes/${studentId}/cold-start`, data);
 
 export default api;
