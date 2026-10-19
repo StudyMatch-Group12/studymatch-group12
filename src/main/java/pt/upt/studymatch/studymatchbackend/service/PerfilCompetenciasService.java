@@ -21,6 +21,8 @@ public class PerfilCompetenciasService {
     private final CompetenciaPesoRepository competenciaPesoRepository;
     private final EstudanteRepository estudanteRepository;
     private final CompetenciaService competenciaService;
+    private final ColdStartProfileRepository coldStartProfileRepository;
+    private final CompetenciaRepository competenciaRepository;
 
     public PerfilCompetenciasService(
             NivelCompetenciaRepository nivelCompetenciaRepository,
@@ -28,7 +30,9 @@ public class PerfilCompetenciasService {
             EnrollmentRepository enrollmentRepository,
             CompetenciaPesoRepository competenciaPesoRepository,
             EstudanteRepository estudanteRepository,
-            CompetenciaService competenciaService) {
+            CompetenciaService competenciaService,
+            ColdStartProfileRepository coldStartProfileRepository,
+            CompetenciaRepository competenciaRepository) {
 
         this.nivelCompetenciaRepository = nivelCompetenciaRepository;
         this.perfilCompetenciasRepository = perfilCompetenciasRepository;
@@ -36,6 +40,8 @@ public class PerfilCompetenciasService {
         this.competenciaPesoRepository = competenciaPesoRepository;
         this.estudanteRepository = estudanteRepository;
         this.competenciaService = competenciaService;
+        this.coldStartProfileRepository = coldStartProfileRepository;
+        this.competenciaRepository = competenciaRepository;
     }
 
     public List<CompetenciaPerfilResponse> consultarPerfil(
@@ -73,6 +79,7 @@ public class PerfilCompetenciasService {
         Map<Long, Double> somaPonderada = new HashMap<>();
         Map<Long, Double> somaPesos = new HashMap<>();
         Map<Long, Competencia> competencias = new HashMap<>();
+        Map<Long, Integer> contagemNotas = new HashMap<>();
 
         for (Enrollment enrollment : historico) {
 
@@ -107,8 +114,15 @@ public class PerfilCompetenciasService {
                         competenciaId,
                         competencia
                 );
+                contagemNotas.merge(competenciaId, 1, Integer::sum);
             }
         }
+
+        Map<Long, Integer> autoavaliacao = coldStartProfileRepository.findByEstudanteId(estudanteId)
+                .map(ColdStartProfile::getNiveis)
+                .orElseGet(Map::of);
+        competenciaRepository.findAllById(autoavaliacao.keySet())
+                .forEach(competencia -> competencias.putIfAbsent(competencia.getId(), competencia));
 
         PerfilCompetencias perfil =
                 perfilCompetenciasRepository
@@ -127,24 +141,25 @@ public class PerfilCompetenciasService {
         // Remove os níveis antigos antes de guardar o recálculo.
         perfil.getNiveis().clear();
 
-        for (Long competenciaId : somaPonderada.keySet()) {
+        for (Long competenciaId : competencias.keySet()) {
+            double totalPeso = somaPesos.getOrDefault(competenciaId, 0.0);
+            Integer nivelInicial = autoavaliacao.get(competenciaId);
+            if (totalPeso <= 0 && nivelInicial == null) continue;
 
-            double totalPeso = somaPesos.get(competenciaId);
-
-            if (totalPeso <= 0) {
-                continue;
-            }
-
-            double media =
-                    somaPonderada.get(competenciaId) / totalPeso;
-
-            int nivel =
-                    competenciaService.converterParaNivel(media);
+            int nivelAcademico = totalPeso > 0
+                    ? competenciaService.converterParaNivel(somaPonderada.get(competenciaId) / totalPeso)
+                    : 0;
+            int notas = contagemNotas.getOrDefault(competenciaId, 0);
+            int nivel = nivelInicial == null ? nivelAcademico
+                    : notas == 0 ? nivelInicial
+                    : (int) Math.round((nivelInicial + notas * nivelAcademico) / (double) (notas + 1));
+            String origem = nivelInicial == null ? "HISTORICO_ACADEMICO"
+                    : notas == 0 ? "AUTOAVALIACAO" : "MISTO";
 
             NivelCompetencia nivelCompetencia =
                     new NivelCompetencia(
                             nivel,
-                            "HISTORICO_ACADEMICO",
+                            origem,
                             competencias.get(competenciaId),
                             perfil
                     );
