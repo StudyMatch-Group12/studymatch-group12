@@ -156,3 +156,30 @@
     background: #374151;
     color: #fff;
 }
+.cold-start-onboarding form {
+    display: grid;
+    gap: 0.9rem;
+    max-width: 32rem;
+}
+
+.cold-start-onboarding label {
+    display: grid;
+    gap: 0.3rem;
+}
+
+.cold-start-onboarding input,
+.cold-start-onboarding select {
+    padding: 0.55rem;
+}
+
+.cold-start-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+}
+
+.profile-notice {
+    padding: 0.75rem 1rem;
+    background: #eef5ff;
+    border-radius: 0.5rem;
+}
