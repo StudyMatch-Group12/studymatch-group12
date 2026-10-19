@@ -1,6 +1,14 @@
 # studymatch-group12
 Adaptive Student Group Formation
 
+## Build and run
+
+Requirements: Java 21+, Node.js and MySQL. Configure `DB_URL`, `DB_USERNAME` and `DB_PASSWORD` for the backend, then run `./mvnw spring-boot:run` (Windows: `.\mvnw.cmd spring-boot:run`). In `frontend`, run `npm ci` and `npm start`. The React development server uses the backend API at `/api`.
+
+Run backend tests with `./mvnw test` and frontend tests with `cd frontend && npm test -- --watch=false`. Build the frontend with `npm run build` from `frontend`.
+
+The [cold-start design](docs/cold-start.md) explains the provisional profile, onboarding flow and transition to academic results.
+
 
 ## Git Workflow
 
