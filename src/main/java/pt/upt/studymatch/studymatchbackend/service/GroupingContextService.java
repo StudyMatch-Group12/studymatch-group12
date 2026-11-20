@@ -2,6 +2,7 @@ package pt.upt.studymatch.studymatchbackend.service;
 
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class GroupingContextService {
                 || request.name().isBlank()
                 || request.studentIds() == null
                 || request.studentIds().isEmpty()
-                || request.studentIds().contains(null)) {
+                || request.studentIds().stream().anyMatch(Objects::isNull)) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
                     "Nome e estudantes são obrigatórios"
