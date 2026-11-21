@@ -48,4 +48,29 @@ class GroupMatcherTest {
         assertThrows(IllegalArgumentException.class,
             () -> matcher.generate(candidates(7)));
     }
+
+    @Test
+    void rejectsRepeatedStudent() {
+        var input = candidates(4);
+        input.set(3, input.get(0));
+        assertThrows(IllegalArgumentException.class,
+            () -> matcher.generate(input));
+    }
+
+    @Test
+    void sameInputProducesSameGroups() {
+        var input = candidates(13);
+        assertEquals(matcher.generate(input), matcher.generate(input));
+    }
+
+    @Test
+    void acceptsProvisionalAndMissingProfiles() {
+        var input = List.of(
+            new GroupMatcher.Candidate(1L, Map.of(1L, 5)),
+            new GroupMatcher.Candidate(2L, Map.of(1L, 2)),
+            new GroupMatcher.Candidate(3L, Map.of()),
+            new GroupMatcher.Candidate(4L, Map.of(1L, 3))
+        );
+        assertEquals(4, matcher.generate(input).get(0).size());
+    }
 }
