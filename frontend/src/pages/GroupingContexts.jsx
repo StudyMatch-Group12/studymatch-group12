@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
     searchStudents,
     getGroupingContexts,
+    createGroupingContext,
 } from '../services/api';
 
 export default function GroupingContexts({ onSelectContext }) {
@@ -10,6 +11,8 @@ export default function GroupingContexts({ onSelectContext }) {
     const [selected, setSelected] = useState([]);
     const [contexts, setContexts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+    const [loadError, setLoadError] = useState('');
     const [error, setError] = useState('');
 
     useEffect(() => {
@@ -25,7 +28,7 @@ export default function GroupingContexts({ onSelectContext }) {
                 setContexts(contextResponse.data);
             })
             .catch(() => {
-                if (active) setError('Não foi possível carregar os dados.');
+                if (active) setLoadError('Não foi possível carregar os dados.');
             })
             .finally(() => {
                 if (active) setLoading(false);
@@ -41,45 +44,84 @@ export default function GroupingContexts({ onSelectContext }) {
         );
     };
 
+    const submit = async (event) => {
+        event.preventDefault();
+
+        if (!name.trim() || selected.length === 0) {
+            setError('Indica um nome e seleciona estudantes.');
+            return;
+        }
+
+        setSaving(true);
+        setError('');
+
+        try {
+            const response = await createGroupingContext({
+                name: name.trim(),
+                studentIds: selected,
+            });
+            setContexts(current => [...current, response.data]);
+            setName('');
+            setSelected([]);
+            onSelectContext(response.data.id);
+        } catch (err) {
+            setError(
+                err.response?.data?.detail ||
+                'Não foi possível criar o contexto.'
+            );
+        } finally {
+            setSaving(false);
+        }
+    };
+
     return (
         <main className="students-page">
             <h2>Contextos de agrupamento</h2>
 
             {loading && <p>A carregar…</p>}
-            {error && <p role="alert">{error}</p>}
+            {(loadError || error) && <p role="alert">{loadError || error}</p>}
 
-            {!loading && !error && (
+            {!loading && !loadError && (
                 <>
-                    <label htmlFor="context-name">Atividade</label>
-                    <input
-                        id="context-name"
-                        value={name}
-                        onChange={event =>
-                            setName(event.target.value)
-                        }
-                    />
+                    <form onSubmit={submit}>
+                        <label htmlFor="context-name">Atividade</label>
+                        <input
+                            id="context-name"
+                            disabled={saving}
+                            value={name}
+                            onChange={event =>
+                                setName(event.target.value)
+                            }
+                        />
 
-                    <fieldset>
-                        <legend>Estudantes participantes</legend>
-                        {students.map(student => (
-                            <label
-                                key={student.id}
-                                style={{ display: 'block' }}
-                            >
-                                <input
-                                    type="checkbox"
-                                    checked={selected.includes(
-                                        student.id
-                                    )}
-                                    onChange={() =>
-                                        toggleStudent(student.id)
-                                    }
-                                />
-                                {student.nome} (
-                                {student.numeroEstudante})
-                            </label>
-                        ))}
-                    </fieldset>
+                        <fieldset disabled={saving}>
+                            <legend>Estudantes participantes</legend>
+                            {students.map(student => (
+                                <label
+                                    key={student.id}
+                                    style={{ display: 'block' }}
+                                >
+                                    <input
+                                        type="checkbox"
+                                        checked={selected.includes(
+                                            student.id
+                                        )}
+                                        onChange={() =>
+                                            toggleStudent(student.id)
+                                        }
+                                    />
+                                    {student.nome} (
+                                    {student.numeroEstudante})
+                                </label>
+                            ))}
+                        </fieldset>
+
+                        <button type="submit" disabled={saving}>
+                            {saving
+                                ? 'A guardar…'
+                                : 'Criar contexto'}
+                        </button>
+                    </form>
 
                     <h3>Contextos existentes</h3>
                     {contexts.length === 0 && (
