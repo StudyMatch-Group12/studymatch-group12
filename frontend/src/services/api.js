@@ -28,4 +28,10 @@ export const getCompetencies = () => api.get('/competencias');
 export const createColdStartProfile = (studentId, data) =>
     api.post(`/estudantes/${studentId}/cold-start`, data);
 
+export const getGroupingContexts = () =>
+    api.get('/grouping-contexts');
+
+export const createGroupingContext = (data) =>
+    api.post('/grouping-contexts', data);
+
 export default api;
