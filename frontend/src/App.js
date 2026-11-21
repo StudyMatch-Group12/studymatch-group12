@@ -4,20 +4,27 @@ import './pages/Students.css';
 import RegistoEstudante from './components/RegistoEstudante';
 import StudentList from './pages/StudentList';
 import StudentProfile from './pages/StudentProfile';
+import GroupingContexts from './pages/GroupingContexts';
 
 const PAGES = {
     REGISTER: 'register',
     STUDENTS: 'students',
     PROFILE: 'profile',
+    GROUPING: 'grouping',
 };
 
 function App() {
     const [page, setPage] = useState(PAGES.REGISTER);
     const [selectedStudentId, setSelectedStudentId] = useState(null);
+    const [selectedContextId, setSelectedContextId] = useState(null);
 
     const openProfile = (studentId) => {
         setSelectedStudentId(studentId);
         setPage(PAGES.PROFILE);
+    };
+
+    const openContext = (contextId) => {
+        setSelectedContextId(contextId);
     };
 
     return (
