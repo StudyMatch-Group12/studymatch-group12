@@ -9,6 +9,8 @@ Run backend tests with `./mvnw test` and frontend tests with `cd frontend && npm
 
 The [cold-start design](docs/cold-start.md) explains the provisional profile, onboarding flow and transition to academic results.
 
+A [estratégia de matching](docs/group-matching.md) descreve as regras de dimensão dos grupos, a pontuação baseada nos perfis de competências e o algoritmo de distribuição.
+
 
 ## Git Workflow
 
