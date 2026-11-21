@@ -31,10 +31,37 @@ public class GroupMatcher {
 
         List<Integer> sizes = groupSizes(candidates.size());
 
+        Set<Long> competencyIds = new TreeSet<>();
+        for (Candidate candidate : candidates) {
+            competencyIds.addAll(candidate.levels().keySet());
+        }
+
+        List<Candidate> ordered = new ArrayList<>(candidates);
+        ordered.sort(
+            Comparator.comparingDouble(
+                (Candidate candidate) ->
+                    average(candidate, competencyIds)
+            ).reversed().thenComparing(Candidate::studentId)
+        );
+
         throw new UnsupportedOperationException(
             "Distribuição ainda não implementada (" + sizes.size()
-                + " grupos previstos)"
+                + " grupos previstos, " + ordered.size()
+                + " estudantes ordenados)"
         );
+    }
+
+    private double average(
+            Candidate candidate,
+            Set<Long> competencyIds) {
+        if (competencyIds.isEmpty()) {
+            return 3;
+        }
+
+        return competencyIds.stream()
+            .mapToInt(id -> candidate.levels().getOrDefault(id, 3))
+            .average()
+            .orElse(3);
     }
 
     private List<Integer> groupSizes(int count) {
