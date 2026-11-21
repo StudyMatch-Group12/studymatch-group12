@@ -13,4 +13,7 @@ public interface NivelCompetenciaRepository
 
     List<NivelCompetencia>
     findByPerfilCompetenciasEstudanteNumeroEstudante(String numeroEstudante);
+
+    List<NivelCompetencia>
+    findByPerfilCompetenciasEstudanteId(Long estudanteId);
 }
