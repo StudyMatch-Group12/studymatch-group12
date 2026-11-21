@@ -39,17 +39,41 @@ function App() {
                 </button>
                 <button
                     type="button"
-                    className={page !== PAGES.REGISTER ? 'active' : ''}
+                    className={
+                        page === PAGES.STUDENTS ||
+                        page === PAGES.PROFILE
+                            ? 'active' : ''
+                    }
                     onClick={() => setPage(PAGES.STUDENTS)}
                 >
                     Students
                 </button>
+                <button
+                    type="button"
+                    className={page === PAGES.GROUPING ? 'active' : ''}
+                    onClick={() => setPage(PAGES.GROUPING)}
+                >
+                    Grupos
+                </button>
             </nav>
 
             {page === PAGES.REGISTER && <RegistoEstudante />}
-            {page === PAGES.STUDENTS && <StudentList onSelectStudent={openProfile} />}
+            {page === PAGES.STUDENTS && (
+                <StudentList onSelectStudent={openProfile} />
+            )}
             {page === PAGES.PROFILE && (
-                <StudentProfile studentId={selectedStudentId} onBack={() => setPage(PAGES.STUDENTS)} />
+                <StudentProfile
+                    studentId={selectedStudentId}
+                    onBack={() => setPage(PAGES.STUDENTS)}
+                />
+            )}
+            {page === PAGES.GROUPING && (
+                <GroupingContexts
+                    onSelectContext={openContext}
+                />
+            )}
+            {selectedContextId !== null && page === PAGES.GROUPING && (
+                <p>Contexto selecionado: {selectedContextId}</p>
             )}
         </div>
     );
