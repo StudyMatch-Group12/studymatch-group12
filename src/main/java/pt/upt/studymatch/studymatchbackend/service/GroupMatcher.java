@@ -44,24 +44,41 @@ public class GroupMatcher {
             ).reversed().thenComparing(Candidate::studentId)
         );
 
-        throw new UnsupportedOperationException(
-            "Distribuição ainda não implementada (" + sizes.size()
-                + " grupos previstos, " + ordered.size()
-                + " estudantes ordenados)"
-        );
-    }
-
-    private double average(
-            Candidate candidate,
-            Set<Long> competencyIds) {
-        if (competencyIds.isEmpty()) {
-            return 3;
+        List<List<Candidate>> groups = new ArrayList<>();
+        for (int ignored : sizes) {
+            groups.add(new ArrayList<>());
         }
 
-        return competencyIds.stream()
-            .mapToInt(id -> candidate.levels().getOrDefault(id, 3))
-            .average()
-            .orElse(3);
+        for (Candidate candidate : ordered) {
+            int chosen = -1;
+            double best = Double.NEGATIVE_INFINITY;
+
+            for (int i = 0; i < groups.size(); i++) {
+                List<Candidate> group = groups.get(i);
+                if (group.size() >= sizes.get(i)) {
+                    continue;
+                }
+
+                double score = group.isEmpty()
+                    ? 1_000_000 - i
+                    : 10 * complementarity(
+                        group, candidate, competencyIds
+                    ) - groupStrength(group, competencyIds);
+
+                if (score > best) {
+                    best = score;
+                    chosen = i;
+                }
+            }
+
+            groups.get(chosen).add(candidate);
+        }
+
+        return groups.stream()
+            .map(group -> group.stream()
+                .map(Candidate::studentId)
+                .toList())
+            .toList();
     }
 
     private List<Integer> groupSizes(int count) {
@@ -82,5 +99,43 @@ public class GroupMatcher {
         throw new IllegalArgumentException(
             "Não é possível formar apenas grupos de 4 ou 5"
         );
+    }
+
+    private double average(
+            Candidate candidate,
+            Set<Long> competencyIds) {
+        if (competencyIds.isEmpty()) {
+            return 3;
+        }
+
+        return competencyIds.stream()
+            .mapToInt(id -> candidate.levels().getOrDefault(id, 3))
+            .average()
+            .orElse(3);
+    }
+
+    private double groupStrength(
+            List<Candidate> group,
+            Set<Long> competencyIds) {
+        return group.stream()
+            .mapToDouble(c -> average(c, competencyIds))
+            .sum();
+    }
+
+    private double complementarity(
+            List<Candidate> group,
+            Candidate candidate,
+            Set<Long> competencyIds) {
+        double gain = 0;
+        for (Long id : competencyIds) {
+            int previousBest = group.stream()
+                .mapToInt(c -> c.levels().getOrDefault(id, 3))
+                .max()
+                .orElse(3);
+            int candidateLevel =
+                candidate.levels().getOrDefault(id, 3);
+            gain += Math.max(0, candidateLevel - previousBest);
+        }
+        return gain;
     }
 }
