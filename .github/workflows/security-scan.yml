@@ -1,0 +1,38 @@
+name: Security Scan
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  drogonsec:
+    name: Scan com Drogonsec
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obter o código
+        uses: actions/checkout@v4
+
+      - name: Correr o Drogonsec
+        # O Drogonsec termina com erro quando encontra vulnerabilidades
+        # HIGH ou CRITICAL. Nesta versão o scan só informa e não bloqueia o PR.
+        continue-on-error: true
+        run: >
+          docker run --rm
+          --user "$(id -u):$(id -g)"
+          -v "$PWD":/scan
+          ghcr.io/filipi86/drogonsec:3e8b5a685ec0944d1cedd6b7f4c905bf8ccd4dc7
+          scan /scan --format html --output /scan/drogonsec-report.html
+
+      - name: Guardar o relatório
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: drogonsec-report
+          path: drogonsec-report.html
+          if-no-files-found: warn
+          retention-days: 14

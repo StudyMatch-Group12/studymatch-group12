@@ -1,0 +1,16 @@
+# Configuração do Drogonsec (scan de segurança do CI)
+
+scan:
+  min_severity: LOW
+  ignore_paths:
+    - ".mvn"
+    - "src/test"
+    - "docs"
+
+engines:
+  sast:
+    enabled: true
+  sca:
+    enabled: true
+  leaks:
+    enabled: true
