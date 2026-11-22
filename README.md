@@ -11,6 +11,8 @@ The [cold-start design](docs/cold-start.md) explains the provisional profile, on
 
 A [estratégia de matching](docs/group-matching.md) descreve as regras de dimensão dos grupos, a pontuação baseada nos perfis de competências e o algoritmo de distribuição.
 
+O [scan de segurança](docs/security-scan.md) explica como o Drogonsec corre no CI e como ler o relatório.
+
 
 ## Git Workflow
 
