@@ -27,3 +27,12 @@ jobs:
           -v "$PWD":/scan
           ghcr.io/filipi86/drogonsec:3e8b5a685ec0944d1cedd6b7f4c905bf8ccd4dc7
           scan /scan --format html --output /scan/drogonsec-report.html
+
+      - name: Guardar o relatório
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: drogonsec-report
+          path: drogonsec-report.html
+          if-no-files-found: warn
+          retention-days: 14
