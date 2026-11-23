@@ -38,3 +38,24 @@ test('creates context with selected student and opens it', async () => {
     );
     expect(select).toHaveBeenCalledWith(9);
 });
+test('validates empty input and shows API rejection', async () => {
+    createGroupingContext.mockRejectedValue({
+        response: { data: { detail: 'Estudante inexistente' } },
+    });
+
+    render(<GroupingContexts onSelectContext={() => {}} />);
+    await screen.findByLabelText('Atividade');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Criar contexto' }));
+    expect(screen.getByRole('alert')).toHaveTextContent('Indica um nome');
+
+    fireEvent.change(screen.getByLabelText('Atividade'), {
+        target: { value: 'Projeto' },
+    });
+    fireEvent.click(screen.getByRole('checkbox'));
+    fireEvent.click(screen.getByRole('button', { name: 'Criar contexto' }));
+
+    await waitFor(() =>
+        expect(screen.getByRole('alert')).toHaveTextContent('Estudante inexistente')
+    );
+});
