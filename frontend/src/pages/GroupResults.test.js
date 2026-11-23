@@ -1,11 +1,12 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import GroupResults from './GroupResults';
-import { generateGroups, getGroupGeneration, getGroupGenerations } from '../services/api';
+import { generateGroups, getGroupGeneration, getGroupGenerations, getStudentCompetencies } from '../services/api';
 
 jest.mock('../services/api', () => ({
     generateGroups: jest.fn(),
     getGroupGeneration: jest.fn(),
     getGroupGenerations: jest.fn(),
+    getStudentCompetencies: jest.fn(),
 }));
 
 const generation = {
@@ -15,6 +16,7 @@ const generation = {
     ] }],
 };
 
+beforeEach(() => getStudentCompetencies.mockResolvedValue({ data: [{ nome: 'Programação', nivel: 5 }] }));
 afterEach(() => jest.clearAllMocks());
 
 test('shows persisted groups and opens a student profile', async () => {
@@ -22,6 +24,7 @@ test('shows persisted groups and opens a student profile', async () => {
     const onSelectStudent = jest.fn();
     render(<GroupResults contextId={2} onSelectStudent={onSelectStudent} />);
     expect(await screen.findByText('Grupo 1')).toBeInTheDocument();
+    expect(await screen.findByText(/Programação \(5\/5\)/)).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Ana (123)' }));
     expect(onSelectStudent).toHaveBeenCalledWith(4);
 });

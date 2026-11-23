@@ -1,5 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { generateGroups, getGroupGeneration, getGroupGenerations } from '../services/api';
+import { generateGroups, getGroupGeneration, getGroupGenerations, getStudentCompetencies } from '../services/api';
+
+function GroupMember({ member, onSelectStudent }) {
+    const [competencies, setCompetencies] = useState(null);
+
+    useEffect(() => {
+        let active = true;
+        setCompetencies(null);
+        getStudentCompetencies(member.studentNumber)
+            .then(({ data }) => { if (active) setCompetencies(data); })
+            .catch(() => { if (active) setCompetencies([]); });
+        return () => { active = false; };
+    }, [member.studentNumber]);
+
+    const strongest = competencies?.slice().sort((a, b) => b.nivel - a.nivel).slice(0, 2);
+    return (
+        <li>
+            <button type="button" onClick={() => onSelectStudent(member.id)}>
+                {member.name} ({member.studentNumber})
+            </button> — {member.course || 'Curso não indicado'}
+            {strongest?.length > 0 && <span> · Competências: {strongest.map(item => `${item.nome} (${item.nivel}/5)`).join(', ')}</span>}
+            {competencies?.length === 0 && <span> · Sem competências registadas</span>}
+        </li>
+    );
+}
 
 export default function GroupResults({ contextId, onSelectStudent }) {
     const [generations, setGenerations] = useState([]);
@@ -82,11 +106,7 @@ export default function GroupResults({ contextId, onSelectStudent }) {
                                     <section key={group.number}>
                                         <h4>Grupo {group.number}</h4>
                                         <ul>{group.members.map(member => (
-                                            <li key={member.id}>
-                                                <button type="button" onClick={() => onSelectStudent(member.id)}>
-                                                    {member.name} ({member.studentNumber})
-                                                </button> — {member.course || 'Curso não indicado'}
-                                            </li>
+                                            <GroupMember key={member.id} member={member} onSelectStudent={onSelectStudent} />
                                         ))}</ul>
                                     </section>
                                 ))}
