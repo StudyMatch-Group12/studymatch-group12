@@ -25,7 +25,7 @@ jobs:
           cache: maven
 
       - name: Descarregar as dependências do backend
-        run: ./mvnw -B -q dependency:resolve
+        run: sh ./mvnw -B -q dependency:resolve
 
       - name: Correr o Drogonsec
         # O Drogonsec termina com erro quando encontra vulnerabilidades
