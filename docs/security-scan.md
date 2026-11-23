@@ -5,7 +5,7 @@ O projeto usa o [Drogonsec](https://github.com/filipi86/drogonsec) para analisar
 ## O que analisa
 
 - SAST: vulnerabilidades no código.
-- SCA: vulnerabilidades conhecidas nas dependências.
+- SCA: vulnerabilidades conhecidas nas dependências do frontend (npm) e do backend (Maven).
 - Leaks: passwords e chaves esquecidas no código.
 
 ## Quando corre
@@ -21,6 +21,10 @@ O scan só informa e não bloqueia o Pull Request. Mesmo que encontre vulnerabil
 3. Abre o ficheiro `drogonsec-report.html` no browser.
 
 O relatório fica disponível durante 14 dias.
+
+## Backend (Maven)
+
+Antes do scan, o workflow instala o Java 21 e descarrega as dependências do backend com `./mvnw dependency:resolve`. O contentor do Drogonsec recebe essa pasta em modo de leitura, para conseguir analisar o `pom.xml`.
 
 ## Configuração
 
