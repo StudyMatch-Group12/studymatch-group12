@@ -35,6 +35,8 @@ jobs:
           docker run --rm
           --user "$(id -u):$(id -g)"
           -v "$PWD":/scan
+          -v "$HOME/.m2/repository":/m2/repository:ro
+          -e MAVEN_OPTS=-Dmaven.repo.local=/m2/repository
           ghcr.io/filipi86/drogonsec:3e8b5a685ec0944d1cedd6b7f4c905bf8ccd4dc7
           scan /scan --format html --output /scan/drogonsec-report.html
 
