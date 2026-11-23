@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import GroupingCredentials from '../components/GroupingCredentials';
+
 import {
     searchStudents,
     getGroupingContexts,
@@ -77,7 +79,7 @@ export default function GroupingContexts({ onSelectContext }) {
     return (
         <main className="students-page">
             <h2>Contextos de agrupamento</h2>
-
+            <GroupingCredentials />
             {loading && <p>A carregar…</p>}
             {(loadError || error) && <p role="alert">{loadError || error}</p>}
 
