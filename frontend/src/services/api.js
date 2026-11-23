@@ -34,4 +34,13 @@ export const getGroupingContexts = () =>
 export const createGroupingContext = (data) =>
     api.post('/grouping-contexts', data);
 
+export const getGroupGenerations = (contextId) =>
+    api.get(`/grouping-contexts/${contextId}/generations`);
+
+export const getGroupGeneration = (generationId) =>
+    api.get(`/group-generations/${generationId}`);
+
+export const generateGroups = (contextId) =>
+    api.post(`/grouping-contexts/${contextId}/generations`);
+
 export default api;

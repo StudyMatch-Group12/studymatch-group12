@@ -5,6 +5,7 @@ import RegistoEstudante from './components/RegistoEstudante';
 import StudentList from './pages/StudentList';
 import StudentProfile from './pages/StudentProfile';
 import GroupingContexts from './pages/GroupingContexts';
+import GroupResults from './pages/GroupResults';
 
 const PAGES = {
     REGISTER: 'register',
@@ -73,7 +74,7 @@ function App() {
                 />
             )}
             {selectedContextId !== null && page === PAGES.GROUPING && (
-                <p>Contexto selecionado: {selectedContextId}</p>
+                <GroupResults contextId={selectedContextId} onSelectStudent={openProfile} />
             )}
         </div>
     );
