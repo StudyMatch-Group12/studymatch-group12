@@ -16,6 +16,10 @@ O scan só informa e não bloqueia o Pull Request. Mesmo que encontre vulnerabil
 
 ## Como ver o resultado
 
+Em cada Pull Request, o workflow escreve um comentário com o número de avisos por severidade (Critical, High, Medium e Low). Em cada novo push, esse mesmo comentário é atualizado. O resumo também aparece na página da execução, no separador **Actions**.
+
+Para ver o relatório completo:
+
 1. No GitHub, abre o separador **Actions** e escolhe a execução do **Security Scan**.
 2. Em **Artifacts**, descarrega o `drogonsec-report`.
 3. Abre o ficheiro `drogonsec-report.html` no browser.
