@@ -40,6 +40,47 @@ jobs:
           ghcr.io/filipi86/drogonsec:3e8b5a685ec0944d1cedd6b7f4c905bf8ccd4dc7
           scan /scan --format html --output /scan/drogonsec-report.html
 
+      - name: Resumir o resultado do scan
+        id: resumo
+        if: always()
+        run: |
+          if [ ! -f drogonsec-report.html ]; then
+            echo "disponivel=false" >> "$GITHUB_OUTPUT"
+            echo "O scan não gerou relatório." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          valor() {
+            grep -oP "<div class=\"number[^\"]*\">\K[0-9]+(?=</div><div class=\"label\">$1</div>)" drogonsec-report.html | head -1
+          }
+
+          total=$(valor "Total Findings")
+          critical=$(valor "Critical")
+          high=$(valor "High")
+          medium=$(valor "Medium")
+          low=$(valor "Low")
+
+          {
+            echo "disponivel=true"
+            echo "total=$total"
+            echo "critical=$critical"
+            echo "high=$high"
+            echo "medium=$medium"
+            echo "low=$low"
+          } >> "$GITHUB_OUTPUT"
+
+          {
+            echo "## Resultado do scan de segurança"
+            echo ""
+            echo "| Severidade | Avisos |"
+            echo "|---|---|"
+            echo "| Critical | $critical |"
+            echo "| High | $high |"
+            echo "| Medium | $medium |"
+            echo "| Low | $low |"
+            echo "| **Total** | **$total** |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Guardar o relatório
         if: always()
         uses: actions/upload-artifact@v4
