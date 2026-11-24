@@ -1,11 +1,17 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import GroupingContexts from './GroupingContexts';
 import { searchStudents, getGroupingContexts, createGroupingContext } from '../services/api';
+import { setGroupingCredentials } from '../utils/groupingAuth';
 
 jest.mock('../services/api', () => ({
     searchStudents: jest.fn(),
     getGroupingContexts: jest.fn(),
     createGroupingContext: jest.fn(),
+
+}));
+
+jest.mock('../utils/groupingAuth', () => ({
+    setGroupingCredentials: jest.fn(),
 }));
 
 beforeEach(() => {
@@ -58,4 +64,20 @@ test('validates empty input and shows API rejection', async () => {
     await waitFor(() =>
         expect(screen.getByRole('alert')).toHaveTextContent('Estudante inexistente')
     );
+});
+
+test('keeps authorization input separate from context data', async () => {
+    render(<GroupingContexts onSelectContext={() => {}} />);
+    await screen.findByText('Ana (001)');
+
+    fireEvent.change(screen.getByLabelText('Utilizador'), {
+        target: { value: 'docente' },
+    });
+    fireEvent.change(screen.getByLabelText('Palavra-passe'), {
+        target: { value: 'segredo' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: 'Usar credenciais' }));
+
+    expect(setGroupingCredentials).toHaveBeenCalledWith('docente', 'segredo');
+    expect(screen.getByLabelText('Palavra-passe')).toHaveValue('');
 });
