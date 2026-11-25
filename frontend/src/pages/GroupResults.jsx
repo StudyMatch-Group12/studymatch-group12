@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { generateGroups, getGroupGeneration, getGroupGenerations, getStudentCompetencies } from '../services/api';
+import {
+    generateGroups,
+    getGroupGeneration,
+    getGroupGenerations,
+    getStudentCompetencies,
+    getCompetencies,
+} from '../services/api';
 
 function GroupMember({ member, onSelectStudent }) {
     const [competencies, setCompetencies] = useState(null);
@@ -48,6 +55,22 @@ export default function GroupResults({ contextId, onSelectStudent }) {
         return () => { active = false; };
     }, [contextId]);
 
+    useEffect(() => {
+        let active = true;
+
+        getCompetencies()
+            .then(({ data }) => {
+                if (active) {
+                    setCompetencyNames(
+                        Object.fromEntries(data.map(item => [item.id, item.nome]))
+                    );
+                }
+            })
+            .catch(() => {});
+
+        return () => { active = false; };
+    }, []);
+
     const selectGeneration = async (id) => {
         setBusy(true);
         setError('');
@@ -75,6 +98,8 @@ export default function GroupResults({ contextId, onSelectStudent }) {
             setBusy(false);
         }
     };
+
+    const [competencyNames, setCompetencyNames] = useState({});
 
     return (
         <section aria-label="Resultados dos grupos">
