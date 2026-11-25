@@ -98,3 +98,19 @@ test('explains groups and preserves history after another generation', async () 
     expect(screen.getByRole('button', { name: /Geração #8/ }))
         .toBeInTheDocument();
 });
+
+test('reports unauthorized generation and allows retry', async () => {
+    getGroupGenerations.mockResolvedValue({ data: [] });
+    generateGroups
+        .mockRejectedValueOnce({ response: { status: 401 } })
+        .mockResolvedValueOnce({ data: generation });
+
+    render(<GroupResults contextId={2} onSelectStudent={() => {}} />);
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Gerar grupos' }));
+    expect(await screen.findByRole('alert'))
+        .toHaveTextContent('Credenciais inválidas');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Gerar grupos' }));
+    expect(await screen.findByText('Grupo 1')).toBeInTheDocument();
+});

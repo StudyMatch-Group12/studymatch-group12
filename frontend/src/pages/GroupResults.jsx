@@ -93,7 +93,11 @@ export default function GroupResults({ contextId, onSelectStudent }) {
             setGenerations(current => [data, ...current]);
             setSelected(data);
         } catch (err) {
-            setError(err.response?.data?.detail || 'Não foi possível gerar os grupos.');
+            setError(
+                err.response?.status === 401
+                    ? 'Credenciais inválidas ou em falta.'
+                    : err.response?.data?.detail || 'Não foi possível gerar os grupos.'
+            );
         } finally {
             setBusy(false);
         }
@@ -108,7 +112,9 @@ export default function GroupResults({ contextId, onSelectStudent }) {
             {error && <p role="alert">{error}</p>}
             {!loading && (
                 <>
-                    <button type="button" disabled={busy} onClick={createGeneration}>Gerar grupos</button>
+                    <button type="button" disabled={busy} onClick={createGeneration}>
+                        {busy ? 'A processar…' : 'Gerar grupos'}
+                    </button>
                     {generations.length === 0 ? <p>Ainda não existem gerações para este contexto.</p> : (
                         <>
                             <h3>Gerações anteriores</h3>
