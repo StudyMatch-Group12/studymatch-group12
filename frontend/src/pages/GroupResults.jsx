@@ -130,6 +130,12 @@ export default function GroupResults({ contextId, onSelectStudent }) {
                                 selected.groups.map(group => (
                                     <section key={group.number}>
                                         <h4>Grupo {group.number}</h4>
+                                        {group.meanScore != null && (
+                                            <p>
+                                                Média: {group.meanScore.toFixed(2)}/5;
+                                                diferença entre pontuações: {group.scoreSpread.toFixed(2)}.
+                                            </p>
+                                        )}
                                         <ul>{group.members.map(member => (
                                             <GroupMember key={member.id} member={member} onSelectStudent={onSelectStudent} />
                                         ))}</ul>
