@@ -1,6 +1,13 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import GroupResults from './GroupResults';
 import { generateGroups, getGroupGeneration, getGroupGenerations, getStudentCompetencies } from '../services/api';
+import {
+    generateGroups,
+    getGroupGeneration,
+    getGroupGenerations,
+    getStudentCompetencies,
+    getCompetencies,
+} from '../services/api';
 
 jest.mock('../services/api', () => ({
     generateGroups: jest.fn(),
@@ -9,14 +16,34 @@ jest.mock('../services/api', () => ({
     getStudentCompetencies: jest.fn(),
 }));
 
+jest.mock('../services/api', () => ({
+    generateGroups: jest.fn(),
+    getGroupGeneration: jest.fn(),
+    getGroupGenerations: jest.fn(),
+    getStudentCompetencies: jest.fn(),
+    getCompetencies: jest.fn(),
+}));
+
 const generation = {
-    id: 8, contextId: 2, contextName: 'Projeto', generatedAt: '2026-11-23T10:00:00',
-    groups: [{ number: 1, members: [
-        { id: 4, name: 'Ana', studentNumber: '123', course: 'Informática' },
-    ] }],
+    groups: [{
+        number: 1,
+        meanScore: 3.5,
+        scoreSpread: 1,
+        complementaryCompetencyIds: [1],
+        members: [
+            { id: 4, name: 'Ana', studentNumber: '123', course: 'Informática' },
+        ],
+    }],
 };
 
-beforeEach(() => getStudentCompetencies.mockResolvedValue({ data: [{ nome: 'Programação', nivel: 5 }] }));
+beforeEach(() => {
+    getStudentCompetencies.mockResolvedValue({
+        data: [{ nome: 'Programação', nivel: 5 }],
+    });
+    getCompetencies.mockResolvedValue({
+        data: [{ id: 1, nome: 'Programação' }],
+    });
+});
 afterEach(() => jest.clearAllMocks());
 
 test('shows persisted groups and opens a student profile', async () => {
