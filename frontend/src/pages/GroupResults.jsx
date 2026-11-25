@@ -134,6 +134,10 @@ export default function GroupResults({ contextId, onSelectStudent }) {
                                             <p>
                                                 Média: {group.meanScore.toFixed(2)}/5;
                                                 diferença entre pontuações: {group.scoreSpread.toFixed(2)}.
+                                                Competências complementares:{' '}
+                                                {(group.complementaryCompetencyIds || [])
+                                                    .map(id => competencyNames[id] || `#${id}`)
+                                                    .join(', ') || 'nenhuma'}.
                                             </p>
                                         )}
                                         <ul>{group.members.map(member => (

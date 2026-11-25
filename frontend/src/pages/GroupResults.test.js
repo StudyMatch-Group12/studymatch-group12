@@ -80,3 +80,21 @@ test('loads an older generation on selection', async () => {
     await waitFor(() => expect(screen.getByText('Esta geração não contém grupos.')).toBeInTheDocument());
     expect(getGroupGeneration).toHaveBeenCalledWith(7);
 });
+
+test('explains groups and preserves history after another generation', async () => {
+    getGroupGenerations.mockResolvedValue({ data: [generation] });
+    generateGroups.mockResolvedValue({
+        data: { ...generation, id: 9 },
+    });
+
+    render(<GroupResults contextId={2} onSelectStudent={() => {}} />);
+
+    expect(await screen.findByText(/Média: 3.50\/5/))
+        .toHaveTextContent('Programação');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Gerar grupos' }));
+    expect(await screen.findByRole('button', { name: /Geração #9/ }))
+        .toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Geração #8/ }))
+        .toBeInTheDocument();
+});
