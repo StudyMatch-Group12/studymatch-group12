@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { generateGroups, getGroupGeneration, getGroupGenerations, getStudentCompetencies } from '../services/api';
 import {
     generateGroups,
     getGroupGeneration,
@@ -7,6 +6,7 @@ import {
     getStudentCompetencies,
     getCompetencies,
 } from '../services/api';
+import ExportGenerationButton from '../components/ExportGenerationButton';
 
 function GroupMember({ member, onSelectStudent }) {
     const [competencies, setCompetencies] = useState(null);
@@ -132,6 +132,7 @@ export default function GroupResults({ contextId, onSelectStudent }) {
                     {selected && (
                         <div>
                             <h3>{selected.contextName} — geração #{selected.id}</h3>
+                            <ExportGenerationButton generationId={selected.id} disabled={busy} />
                             {selected.groups.length === 0 ? <p>Esta geração não contém grupos.</p> :
                                 selected.groups.map(group => (
                                     <section key={group.number}>
